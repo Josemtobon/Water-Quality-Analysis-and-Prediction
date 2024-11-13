@@ -8,13 +8,6 @@ st.title("Fish Pond Water Quality Dashboard")
 st.write("""
     This dashboard is based on the **Aquaculture - Water Quality Dataset** (Veeramsetty, Venkataramana; Arabelli, Rajeshwarrao; Bernatin, T., 2024).
     The goal of this analysis is to assess the quality of water in fish ponds by examining the relationship between various physicochemical properties (e.g., Temperature, pH, Alkalinity, etc.) and the overall water quality classification.
-
-    In this dashboard, you will be able to:
-    - Explore a statistical summary of the dataset, which includes key descriptive statistics for each feature.
-    - Visualize relationships between the physicochemical features and the water quality categories.
-    - Compare the performance of the models in terms of accuracy and other relevant metrics.
-
-    This analysis aims to help in understanding which features most significantly influence water quality and to provide insights into the best models for prediction.
 """)
 
 
