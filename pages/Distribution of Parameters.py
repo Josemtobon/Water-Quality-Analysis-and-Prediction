@@ -8,10 +8,11 @@ wq = pd.read_csv("WQD.tsv", sep="\t")
 wq = wq.rename(columns={wq.columns[4]: 'CO₂', wq.columns[5]: 'pH'})
 wq['Quality'] = wq['Water Quality'].map({0: 'Execellent', 1: 'Good', 2: 'Poor'})
 
+parameters = wq.columns[:-2]
 
+# Page start
 st.title("Parameter Distribution by Water Quality")
 
-parameters = wq.columns[:-2]
 parameter = st.selectbox(
     'Select a Parameter',
     parameters
@@ -38,6 +39,7 @@ st.header("Kernel Density Stimation")
 
 fig, ax = plt.subplots(figsize=(10, 8))
 sns.kdeplot(wq, x=parameter, hue='Quality', fill=True, ax=ax, palette='Set2')
+ax.legend(title='Water Quality', labels=wq['Quality'].unique()[::-1])
 
 st.pyplot(fig)
 
