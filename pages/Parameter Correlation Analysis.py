@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from scipy import stats
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -36,19 +37,25 @@ for col1 in parameters:
 significant_correlation = correlation_matrix.where(p_value_matrix < .05, other=0)
 
 
-anova_results = pd.DataFrame(columns=['P-Value'])  # To store results
+anova_results = pd.DataFrame(columns=['P-Value', 'Reject Null Hypothesis'])
+tukey_results = pd.DataFrame(columns=[])
 
 for parameter in parameters:
-    # Group the feature by the 'Quality' categories
-    groups = [wq[wq['Quality'] == category][parameter] for category in wq['Quality'].unique()]
+    groups = [group[parameter].values for name, group in wq.groupby('Water Quality')]
 
-    # Perform one-way ANOVA
-    f_stat, p_value = stats.f_oneway(*groups)
+    _, p_value = stats.f_oneway(*groups)
+    if p_value < .05:
+        sd = 'Yes'
+    else:
+        sd = 'No'
 
-    # anova_results.loc[parameter] = p_value
-    st.write(p_value)
+    anova_results.loc[parameter] = str(p_value), sd
 
-# st.dataframe(anova_results)
+    tukey = pairwise_tukeyhsd(endog=wq[parameter],
+                               groups=wq['Quality'],
+                               alpha=0.05)
+
+st.dataframe(anova_results)
 
 
 st.subheader("Parameters with Significant Correlation Heatmap")
