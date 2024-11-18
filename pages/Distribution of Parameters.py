@@ -38,7 +38,7 @@ with col3:
 st.header("Kernel Density Stimation")
 
 fig, ax = plt.subplots(figsize=(10, 8))
-sns.kdeplot(wq, x=parameter, hue='Quality', fill=True, ax=ax, palette='Set2')
+sns.histplot(wq, x=parameter, hue='Quality', fill=True, ax=ax, palette='Set2')
 ax.legend(title='Water Quality', labels=wq['Quality'].unique()[::-1])
 
 st.pyplot(fig)
