@@ -25,18 +25,6 @@ st.subheader("Shapiro-Wilk Results for Each Parameter")
 st.dataframe(shapiro_results)
 
 
-correlation_matrix = pd.DataFrame()
-p_value_matrix = pd.DataFrame()
-
-for col1 in parameters:
-    for col2 in parameters:
-        corr, p_value = stats.pearsonr(wq[col1], wq[col2])
-        correlation_matrix.loc[col1, col2] = corr
-        p_value_matrix.loc[col1, col2] = p_value
-
-significant_correlation = correlation_matrix.where(p_value_matrix < .05, other=0)
-
-
 anova_results = pd.DataFrame(columns=['P-Value', 'Reject Null Hypothesis'])
 tukey_results = pd.DataFrame(columns=[])
 
