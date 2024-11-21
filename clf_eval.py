@@ -102,4 +102,4 @@ for name, clf in classifiers.items():
 
         results.loc[len(results)] = [name, precision, recall, f1]
 
-results.to_csv('performance_results.tsv', sep='\t')
+results.to_csv('performance_results.tsv', index=False, sep='\t')
