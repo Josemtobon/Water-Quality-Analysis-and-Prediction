@@ -18,6 +18,19 @@ parameter = st.selectbox(
     parameters
 )
 
+qualities = st.pills("Water Quality", ["Execellent", "Good", "Poor"], selection_mode="multi")
+filtered_wq = wq[wq['Quality'].isin(qualities)]
+
+fig, ax = plt.subplots(figsize=(10, 8))
+if len(qualities) > 1:
+    sns.histplot(filtered_wq, x=parameter, hue='Quality', fill=True, ax=ax, palette='Set2')
+    ax.legend(title='Water Quality', labels=wq['Quality'].unique()[::-1])
+else:
+    sns.histplot(filtered_wq, x=parameter, fill=True, ax=ax)
+
+st.pyplot(fig)
+
+
 st.header('Parameter Resume')
 
 col1, col2, col3 = st.columns(3)
@@ -33,22 +46,3 @@ with col2:
 with col3:
     st.subheader('Poor')
     st.write(wq[parameter][wq['Quality'] == 'Poor'].describe())
-
-
-st.header("Kernel Density Stimation")
-
-fig, ax = plt.subplots(figsize=(10, 8))
-sns.histplot(wq, x=parameter, hue='Quality', fill=True, ax=ax, palette='Set2')
-ax.legend(title='Water Quality', labels=wq['Quality'].unique()[::-1])
-
-st.pyplot(fig)
-
-st.header("Boxplot")
-
-fig, ax = plt.subplots(figsize=(8, 6))
-sns.boxplot(data=wq, x='Quality', y=parameter, hue='Quality', ax=ax, palette='Set2')
-
-ax.set_xlabel("Water Quality")
-ax.set_ylabel(parameter)
-
-st.pyplot(fig)
