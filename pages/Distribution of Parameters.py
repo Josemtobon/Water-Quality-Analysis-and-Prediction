@@ -18,7 +18,7 @@ parameter = st.selectbox(
     parameters
 )
 
-qualities = st.pills("Water Quality", ["Execellent", "Good", "Poor"], selection_mode="multi")
+qualities = st.pills("Water Quality", ["Execellent", "Good", "Poor"], selection_mode="multi", default=["Execellent", "Good", "Poor"])
 filtered_wq = wq[wq['Quality'].isin(qualities)]
 
 fig, ax = plt.subplots(figsize=(10, 8))
