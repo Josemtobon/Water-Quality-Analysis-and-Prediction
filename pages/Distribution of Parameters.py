@@ -28,7 +28,8 @@ if len(qualities) > 1:
 else:
     sns.histplot(filtered_wq, x=parameter, fill=True, ax=ax)
 
-st.pyplot(fig)
+if qualities:
+    st.pyplot(fig)
 
 
 st.header('Parameter Resume')
