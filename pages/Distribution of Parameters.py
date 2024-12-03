@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+from scipy import stats
+import scikit_posthocs as sp
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -14,7 +16,7 @@ parameters = wq.columns[:-2]
 st.title("Parameter Distribution by Water Quality")
 
 parameter = st.selectbox(
-    'Select a Parameter',
+   'Select a Parameter',
     parameters
 )
 
