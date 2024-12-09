@@ -28,17 +28,43 @@ st.markdown(
 """
 )
 
+
+st.markdown("### Classifiers Performance")
+
+st.markdown("#### Confusion Matrices")
+
 col1, col2 = st.columns(2)
 col3, col4, col5 = st.columns([.25, .5, .25])
 
 with col1:
-    st.image("confusion_matrix_K-Nearest Neighbors.png")
+    st.markdown("##### K-Nearest Neighbors")
+    st.image("images/confusion_matrix_K-Nearest Neighbors.png")
 
 with col2:
-    st.image("confusion_matrix_Random Forest.png")
+    st.markdown("##### Random Forest")
+    st.image("images/confusion_matrix_Random Forest.png")
 
 with col4:
-    st.image("confusion_matrix_SVM.png")
+    st.markdown("##### Support Vector Machine")
+    st.image("images/confusion_matrix_SVM.png")
+
+
+st.markdown("#### Receiver Operating Characteristic (ROC) Analysis")
+
+col6, col7 = st.columns(2)
+col8, col9, col1 = st.columns([.25, .5, .25])
+
+with col6:
+    st.markdown("##### K-Nearest Neighbors")
+    st.image("images/roc_curve_K-Nearest Neighbors.png")
+
+with col7:
+    st.markdown("##### Random Forest")
+    st.image("images/roc_curve_Random Forest.png")
+
+with col9:
+    st.markdown("##### Support Vector Machine")
+    st.image("images/roc_curve_SVM.png")
 
 
 results = pd.read_csv('performance_results.tsv', sep='\t')
@@ -50,4 +76,5 @@ table_html = f"""
 </div>
 """
 
+st.markdown("#### Performance Metrics for Random Forest, KNN, and SVM Classifiers")
 st.markdown(table_html, unsafe_allow_html=True)
