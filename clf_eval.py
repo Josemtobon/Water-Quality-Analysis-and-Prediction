@@ -44,8 +44,8 @@ knn_params = {
 }
 
 
-# RandomizedSearchCV instances
-rf_random_search = GridSearchCV(
+# GridSearchCV instances
+rf_gridsearch = GridSearchCV(
     estimator=RandomForestClassifier(),
     param_grid=rf_params,
     scoring='accuracy',
@@ -53,7 +53,7 @@ rf_random_search = GridSearchCV(
     n_jobs=-1
 )
 
-svm_random_search = GridSearchCV(
+svm_gridsearch = GridSearchCV(
     estimator=SVC(),
     param_grid=svm_params,
     scoring='accuracy',
@@ -61,7 +61,7 @@ svm_random_search = GridSearchCV(
     n_jobs=1
 )
 
-knn_random_search = GridSearchCV(
+knn_gridsearch = GridSearchCV(
     estimator=KNeighborsClassifier(),
     param_grid=knn_params,
     scoring='accuracy',
@@ -69,14 +69,28 @@ knn_random_search = GridSearchCV(
     n_jobs=1
 )
 
-rf_random_search.fit(X_train, y_train)
-svm_random_search.fit(X_train, y_train)
-knn_random_search.fit(X_train, y_train)
+# Grid Search initialize
+rf_gridsearch.fit(X_train, y_train)
+svm_gridsearch.fit(X_train, y_train)
+knn_gridsearch.fit(X_train, y_train)
+
+# Save best params as tsv
+rf_best_params = rf_gridsearch.best_params_
+svm_best_params = svm_gridsearch.best_params_
+knn_best_params = knn_gridsearch.best_params_
+
+params_df = pd.DataFrame([
+    {"Model": "Random Forest", **rf_best_params},
+    {"Model": "SVM", **svm_best_params},
+    {"Model": "KNN", **knn_best_params}
+])
+
+params_df.to_csv('params.tsv', sep='\t', index=False)
 
 # Best stimators
-rf_best_estimator = rf_random_search.best_estimator_
-svm_best_estimator = svm_random_search.best_estimator_
-knn_best_estimator = knn_random_search.best_estimator_
+rf_best_estimator = rf_gridsearch.best_estimator_
+svm_best_estimator = svm_gridsearch.best_estimator_
+knn_best_estimator = knn_gridsearch.best_estimator_
 
 # Training selected models to compare
 classifiers = {
@@ -85,22 +99,26 @@ classifiers = {
     'K-Nearest Neighbors': knn_best_estimator
 }
 
+# df to store testing results
 results = pd.DataFrame(columns=['Model', 'Accuracy', 'Precision', 'Recall', 'F1'])
 
+# Iterate over each classifier
 for name, clf in classifiers.items():
     clf.fit(X_train, y_train)
     y_pred = clf.predict(X_test)
 
+    # Calculate metrics
     accuracy = accuracy_score(y_test, y_pred)
     precision = precision_score(y_test, y_pred, average='macro')
     recall = recall_score(y_test, y_pred, average='macro')
     f1 = f1_score(y_test, y_pred, average='macro')
 
+    # Make confusion matrix
     cm = confusion_matrix(y_test, y_pred, labels=clf.classes_)
 
+    # Display confusion matrix
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Excellent', 'Good', 'Poor'])
     disp.plot(cmap='Blues', xticks_rotation='vertical')
-    disp.ax_.set_title(f"Confusion Matrix for {name}")
 
     # Save the plot as an image file
     plt.savefig(f"confusion_matrix_{name}.png", bbox_inches='tight')
@@ -108,4 +126,5 @@ for name, clf in classifiers.items():
 
     results.loc[len(results)] = [name, accuracy, precision, recall, f1]
 
+# Store testing results as a tsv
 results.to_csv('performance_results.tsv', index=False, sep='\t')
