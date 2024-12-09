@@ -23,14 +23,50 @@ The dataset contains a total of 4,300 samples, with 1,500 poor quality water sam
 wq = pd.read_csv("WQD.tsv", sep="\t")
 wq["Quality"] = wq["Water Quality"].map({0: "Excellent", 1: "Good", 2: "Poor"})
 
-fig, ax = plt.subplots()
-sns.histplot(wq, x="Quality", color="#FF4B4B", shrink=.8, ax=ax)
+fig, ax = plt.subplots(figsize=(8, 4))
+sns.histplot(wq, x="Quality", color="#FF4B4B", shrink=.5, ax=ax)
 
-ax.set_title("Distribution of Water Quality Categories")
+for patch in ax.patches:
+    height = patch.get_height()
+    width = patch.get_width()
+    x = patch.get_x() + width / 2
+    y = height + 0.1
+    ax.annotate(f'{int(height)}', (x, y), ha='center', va='bottom')
+
 ax.set_xlabel("Water Quality")
 ax.set_ylabel("Number of Samples")
 
-st.pyplot(fig)
+with st.container():
+    st.subheader("Distribution of Water Quality Categories")
+    st.pyplot(fig)
+
+
+data_summary = pd.DataFrame(columns=["Water Quality", "Total Records",
+                                     "Missing Values (count)", "Missing Values (%)",
+                                     "Duplicate Records (count)", "Duplicate Records (%)"])
+
+for quality, group in wq.groupby('Quality'):
+    total = group.shape[0]
+    missing_count = group.isnull().sum().sum()
+    missing_percentage = missing_count / total * 100
+    duplicate_count = group.duplicated().sum()
+    duplicate_percentage = duplicate_count / total * 100
+
+    data_summary.loc[len(data_summary)] = [quality, total, missing_count, missing_percentage,
+                                 duplicate_count, duplicate_percentage]
+
+# Apply styling to hide the index
+styled_table = data_summary.style.hide(axis="index").to_html()
+
+# Center the table using CSS
+table_html = f"""
+<div style="display: flex; justify-content: center; align-items: center;">
+    {styled_table}
+</div>
+"""
+
+st.subheader("Missing Values and Duplicate Data")
+st.markdown(table_html, unsafe_allow_html=True)
 
 
 st.subheader("Dataset Citation")
