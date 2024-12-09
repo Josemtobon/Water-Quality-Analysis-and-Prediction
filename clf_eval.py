@@ -4,9 +4,13 @@ from sklearn.model_selection import train_test_split, GridSearchCV, StratifiedKF
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import (
+    accuracy_score, precision_score, recall_score, f1_score,
+    roc_auc_score, confusion_matrix, ConfusionMatrixDisplay,
+    roc_curve, RocCurveDisplay, auc
+)
 import matplotlib.pyplot as plt
+from matplotlib import colormaps
 
 
 # Water Quality Dataset
@@ -54,7 +58,7 @@ rf_gridsearch = GridSearchCV(
 )
 
 svm_gridsearch = GridSearchCV(
-    estimator=SVC(),
+    estimator=SVC(probability=True),
     param_grid=svm_params,
     scoring='accuracy',
     cv=random_kf,
@@ -100,31 +104,54 @@ classifiers = {
 }
 
 # df to store testing results
-results = pd.DataFrame(columns=['Model', 'Accuracy', 'Precision', 'Recall', 'F1'])
+results = pd.DataFrame(columns=['Model', 'Accuracy', 'Precision', 'Recall', 'F1', 'ROC-AUC Score'])
+
+# Color map for ROC curves and theme
+color_map = colormaps['YlOrRd']
+plt.style.use('dark_background')
 
 # Iterate over each classifier
 for name, clf in classifiers.items():
     clf.fit(X_train, y_train)
     y_pred = clf.predict(X_test)
+    y_probs = clf.predict_proba(X_test)
 
     # Calculate metrics
     accuracy = accuracy_score(y_test, y_pred)
     precision = precision_score(y_test, y_pred, average='macro')
     recall = recall_score(y_test, y_pred, average='macro')
     f1 = f1_score(y_test, y_pred, average='macro')
+    roc_auc = roc_auc_score(y_test, y_probs, multi_class='ovo', average='macro')
 
     # Make confusion matrix
     cm = confusion_matrix(y_test, y_pred, labels=clf.classes_)
 
     # Display confusion matrix
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Excellent', 'Good', 'Poor'])
-    disp.plot(cmap='Blues', xticks_rotation='vertical')
+    disp.plot(cmap='YlOrRd', xticks_rotation='vertical')
 
-    # Save the plot as an image file
-    plt.savefig(f"confusion_matrix_{name}.png", bbox_inches='tight')
+    # Save the plot as aimages/n image file
+    plt.savefig(f"images/confusion_matrix_{name}.png", bbox_inches='tight')
     plt.close()
 
-    results.loc[len(results)] = [name, accuracy, precision, recall, f1]
+    plt.figure(figsize=(8, 6))
+    for class_label, i in {'Excellent': 0, 'Good': 1, 'Poor': 2}.items():
+        fpr, tpr, _ = roc_curve((y_test == i).astype(int), y_probs[:, i])
+        auc_score = auc(fpr, tpr)
+        color = color_map(i / 3)
+        plt.plot(fpr, tpr, label=f"{class_label} (AUC: {auc_score:.2f})", color=color)
+
+    plt.plot([0, 1], [0, 1], '--', label='Chance', color='White')
+    plt.title(f"ROC Curve for {name}")
+    plt.xlabel("False Positive Rate")
+    plt.ylabel("True Positive Rate")
+    plt.legend(loc="lower right")
+
+    # Save the ROC curve plot as an image file
+    plt.savefig(f"images/roc_curve_{name}.png", bbox_inches='tight')
+    plt.close()
+
+    results.loc[len(results)] = [name, accuracy, precision, recall, f1, roc_auc]
 
 # Store testing results as a tsv
 results.to_csv('performance_results.tsv', index=False, sep='\t')
