@@ -67,7 +67,7 @@ with col9:
     st.image("images/roc_curve_SVM.png")
 
 
-results = pd.read_csv('performance_results.tsv', sep='\t')
+results = pd.read_csv('data/performance_results.tsv', sep='\t')
 styled_results = results.style.hide(axis='index').to_html()
 
 table_html = f"""

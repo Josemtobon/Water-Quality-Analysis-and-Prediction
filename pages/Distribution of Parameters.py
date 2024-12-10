@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
-wq = pd.read_csv("WQD.tsv", sep="\t")
+wq = pd.read_csv("data/WQD.tsv", sep="\t")
 wq = wq.rename(columns={wq.columns[4]: 'CO₂', wq.columns[5]: 'pH'})
 wq['Quality'] = wq['Water Quality'].map({0: 'Excellent', 1: 'Good', 2: 'Poor'})
 
