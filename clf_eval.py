@@ -131,7 +131,7 @@ for name, clf in classifiers.items():
     disp.plot(cmap='YlOrRd', xticks_rotation='vertical')
 
     # Save the plot as aimages/n image file
-    plt.savefig(f"images/confusion_matrix_{name}.png", bbox_inches='tight')
+    plt.savefig(f"images/confusion_matrix_{name}.png", bbox_inches='tight', transparent=True)
     plt.close()
 
     plt.figure(figsize=(8, 6))
@@ -145,10 +145,10 @@ for name, clf in classifiers.items():
     plt.title(f"ROC Curve for {name}")
     plt.xlabel("False Positive Rate")
     plt.ylabel("True Positive Rate")
-    plt.legend(loc="lower right")
+    plt.legend(loc="lower right", framealpha=0)
 
     # Save the ROC curve plot as an image file
-    plt.savefig(f"images/roc_curve_{name}.png", bbox_inches='tight')
+    plt.savefig(f"images/roc_curve_{name}.png", bbox_inches='tight', transparent=True)
     plt.close()
 
     results.loc[len(results)] = [name, accuracy, precision, recall, f1, roc_auc]
