@@ -23,8 +23,27 @@ The dataset contains a total of 4,300 samples, with 1,500 poor quality water sam
 wq = pd.read_csv("WQD.tsv", sep="\t")
 wq["Quality"] = wq["Water Quality"].map({0: "Excellent", 1: "Good", 2: "Poor"})
 
+
+# Use transparent background
+plt.rcParams.update({
+    "axes.facecolor": "none",
+    "figure.facecolor": "none",
+    "savefig.facecolor": "none",
+    "xtick.color": "white",
+    "ytick.color": "white",
+    "text.color": "white",
+    "axes.edgecolor": "white",
+    "axes.spines.right": False,
+    "axes.spines.top": False,
+    "axes.labelcolor": "white",
+    "grid.color": "white",
+    "legend.facecolor": "none",
+})
+
+# fig and ax to plot bars
 fig, ax = plt.subplots(figsize=(8, 4))
-sns.histplot(wq, x="Quality", color="#FF4B4B", shrink=.5, ax=ax)
+
+sns.histplot(wq, x="Quality", color="#FF4B4B", edgecolor='none', shrink=.5, ax=ax)
 
 for patch in ax.patches:
     height = patch.get_height()
