@@ -1,4 +1,4 @@
 Model	bootstrap	max_depth	n_estimators	C	kernel	n_neighbors
-Random Forest	False	20.0	100.0			
-SVM				100.0	rbf	
+Random Forest	True		300.0			
+SVM				10.0	rbf	
 KNN						1.0
