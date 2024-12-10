@@ -20,7 +20,7 @@ This dataset was prepared based on the threshold values of each input feature, w
 The dataset contains a total of 4,300 samples, with 1,500 poor quality water samples, 1,400 excellent quality water samples, and 1,400 good quality water samples. It includes 14 input features and one output label column.
 """)
 
-wq = pd.read_csv("WQD.tsv", sep="\t")
+wq = pd.read_csv("data/WQD.tsv", sep="\t")
 wq["Quality"] = wq["Water Quality"].map({0: "Excellent", 1: "Good", 2: "Poor"})
 
 
