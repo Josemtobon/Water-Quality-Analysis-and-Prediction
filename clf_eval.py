@@ -11,10 +11,11 @@ from sklearn.metrics import (
 )
 import matplotlib.pyplot as plt
 from matplotlib import colormaps
+from joblib import dump
 
 
 # Water Quality Dataset
-wq = pd.read_csv('WQD.tsv', sep='\t')
+wq = pd.read_csv('data/WQD.tsv', sep='\t')
 
 # Defining variables
 X = wq.drop(columns=['Water Quality'])
@@ -89,7 +90,7 @@ params_df = pd.DataFrame([
     {"Model": "KNN", **knn_best_params}
 ])
 
-params_df.to_csv('params.tsv', sep='\t', index=False)
+params_df.to_csv('data/params.tsv', sep='\t', index=False)
 
 # Best stimators
 rf_best_estimator = rf_gridsearch.best_estimator_
@@ -154,4 +155,11 @@ for name, clf in classifiers.items():
     results.loc[len(results)] = [name, accuracy, precision, recall, f1, roc_auc]
 
 # Store testing results as a tsv
-results.to_csv('performance_results.tsv', index=False, sep='\t')
+results.to_csv('data/performance_results.tsv', index=False, sep='\t')
+
+# Save best model and scaler
+results['mean'] = results.loc[:, results.columns != 'Model'].mean(axis=1)
+best_model_name = results.loc[results['mean'].idxmax(), 'Model']
+best_model = classifiers[best_model_name]
+dump(best_model, "best_model.joblib")
+dump(scaler, "scaler.joblib")
