@@ -4,6 +4,11 @@ import numpy as np
 from joblib import load
 
 
+st.set_page_config(
+    page_title="Classify Water Quality",
+    page_icon="🧪"
+)
+
 # Load data to extract features and ranges
 wq = pd.read_csv("data/WQD.tsv", sep='\t')
 wq = wq.rename(columns={wq.columns[4]: 'CO₂', wq.columns[5]: 'pH'})
