@@ -9,24 +9,30 @@ st.set_page_config(
     page_icon="🏠"
 )
 
-st.title("Fish Pond Water Quality Dashboard")
+st.markdown("# Analysis and Prediction of Water Quality")
 st.markdown("""
-    This dashboard is based on the [**Aquaculture - Water Quality Dataset**
-    (Veeramsetty, Venkataramana; Arabelli, Rajeshwarrao; Bernatin, T., 2024).](https://data.mendeley.com/datasets/y78ty2g293/1)
-    The goal of this analysis is to assess the quality of water in fish ponds
-    by examining the relationship between various physicochemical properties
-    (e.g., Temperature, pH, Alkalinity, etc.) and the overall water quality
-    classification.
+This project is based on the [**Aquaculture - Water Quality Dataset**
+(Veeramsetty, Venkataramana; Arabelli, Rajeshwarrao; Bernatin, T., 2024).](https://data.mendeley.com/datasets/y78ty2g293/1)
+The goal of this analysis is to assess the quality of water in fish ponds
+using physicochemical properties (e.g., Temperature, pH, Alkalinity, etc.) and
+machine learning models.
 """)
 
 
-st.subheader("Dataset Description")
+st.markdown("## Dataset Description")
 st.write("""
-This dataset is useful for training and testing deep learning models developed to assess the quality of water in fish ponds based on parameters like Temperature, Turbidity, Dissolved Oxygen, Biochemical Oxygen Demand (BOD), CO₂, pH, Alkalinity, Hardness, Calcium, Ammonia, Nitrite, Phosphorus, H₂S, and Plankton. The quality of water in fish ponds is classified into three categories: Excellent, Good, and Poor quality.
+This dataset is useful for training and testing machine learning models
+developed to assess the quality of water in fish ponds based on parameters
+like Temperature, Turbidity, Dissolved Oxygen, Biochemical Oxygen Demand (BOD),
+CO₂, pH, Alkalinity, Hardness, Calcium, Ammonia, Nitrite, Phosphorus, H₂S, and
+Plankton. The quality of water in fish ponds is classified into three categories:
+Excellent, Good, and Poor quality.
 
-This dataset was prepared based on the threshold values of each input feature, which represent the acceptable range, desirable range, and stress range for the growth of fish in ponds. The dataset consists of three different water quality samples: excellent quality is represented by 0, good quality is labeled with 1, and poor quality is labeled with 2.
-
-The dataset contains a total of 4,300 samples, with 1,500 poor quality water samples, 1,400 excellent quality water samples, and 1,400 good quality water samples. It includes 14 input features and one output label column.
+This dataset was prepared based on the threshold values of each input feature,
+which represent the acceptable range, desirable range, and stress range for the
+growth of fish in ponds. The dataset consists of three different water quality
+samples: excellent quality is represented by 0, good quality is labeled with 1,
+and poor quality is labeled with 2.
 """)
 
 wq = pd.read_csv("data/WQD.tsv", sep="\t")
@@ -65,8 +71,15 @@ ax.set_xlabel("Water Quality")
 ax.set_ylabel("Number of Samples")
 
 with st.container():
-    st.subheader("Distribution of Water Quality Categories")
+    st.markdown("## Distribution of Water Quality Categories")
     st.pyplot(fig)
+    st.markdown(
+    """
+    The dataset contains a total of 4,300 samples, with 1,500 poor quality water
+    samples, 1,400 excellent quality water samples, and 1,400 good quality water
+    samples. It includes 14 input features and one output label column.
+    """
+    )
 
 
 data_summary = pd.DataFrame(columns=["Water Quality", "Total Records",
@@ -93,11 +106,25 @@ table_html = f"""
 </div>
 """
 
-st.subheader("Missing Values and Duplicate Data")
+st.markdown("## Missing Values and Duplicate Data")
 st.markdown(table_html, unsafe_allow_html=True)
+st.markdown(
+"""
+The dataset for water quality analysis was evaluated for missing values
+and duplicate records. The results show that no missing or duplicate data
+exists in the dataset across all water quality categories: **Excellent**,
+**Good**, and **Poor**.
+
+- **Missing Values:** All categories have complete records, with 0 missing
+values (0.00%) for each category.
+- **Duplicate Records:** Similarly, no duplicate records were identified, resulting
+in 0 duplicate entries (0.00%) across all categories.
+"""
+)
 
 
-st.subheader("Dataset Citation")
+st.markdown("## Dataset Citation")
 st.write("""
-Veeramsetty, Venkataramana; Arabelli, Rajeshwarrao; Bernatin, T. (2024), “Aquaculture - Water Quality Dataset”, Mendeley Data, V1, doi: 10.17632/y78ty2g293.1
+Veeramsetty, Venkataramana; Arabelli, Rajeshwarrao; Bernatin, T. (2024), “Aquaculture -
+Water Quality Dataset”, Mendeley Data, V1, [doi: 10.17632/y78ty2g293.1](https://data.mendeley.com/datasets/y78ty2g293/1)
 """)

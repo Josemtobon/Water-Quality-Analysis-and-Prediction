@@ -20,6 +20,13 @@ scaler = load("scaler.joblib")
 
 
 st.markdown("# Classify Your Own Water Data")
+st.markdown(
+"""
+**Random Forest**, based on the better overall performance, has been selected
+to classify your data.
+Input the parameters below to classify water quality as Excellent, Good, or Poor.
+"""
+)
 
 # Selection section
 st.markdown("## Select Your Parameters")
@@ -35,7 +42,7 @@ for row in range(5):
                 min_val = wq[params[index]].min()
                 max_val = wq[params[index]].max()
                 middle = min_val + max_val // 2
-                value = st.number_input(f"{params[index]}:",
+                value = st.slider(f"{params[index]}:",
                                   min_value=min_val,
                                   max_value=max_val,
                                   value=middle)
