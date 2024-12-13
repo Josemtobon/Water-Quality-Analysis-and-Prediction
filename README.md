@@ -1,11 +1,44 @@
 # Water Quality Analysis and Prediction
 
-This project uses the dataset [**Aquaculture - Water Quality Dataset** 14 (Veeramsetty, Venkataramana; Arabelli, Rajeshwarrao; Bernatin, T., 2024).](https://data.mendeley.com/datasets/y78ty2g293/1)
-to train and test three different classifiers: Random Forest, Support Vector Machine and K-Nearest Neighbors.
-Finally the best model is used to classify real samples of water.
+This project uses the dataset [**Aquaculture - Water Quality Dataset**](https://data.mendeley.com/datasets/y78ty2g293/1)  
+(Veeramsetty, Venkataramana; Arabelli, Rajeshwarrao; Bernatin, T., 2024) to train and test three different classifiers:  
+**Random Forest**, **Support Vector Machine (SVM)**, and **K-Nearest Neighbors (KNN)**. Finally, the best-performing model is used to classify real samples of water.
 
 ---
 
+## Online Version
+
+You can access the app directly using this [Streamlit link](https://aquanalysis.streamlit.app).
+
+---
+
+## How to Run the Project Locally
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/Josemtobon/Water-Quality-Analysis-and-Prediction.git
+   cd Water-Quality-Analysis-and-Prediction
+   ```
+
+
+2. **Install Dependencies**
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+
+3. **Run the Streamlit App**
+
+   ```bash
+   streamlit run Home.py
+   ```
+
+---
+
+## Repository Structure
+
+```
 ├── best_model.joblib                  # Trained model with the best overall performance
 ├── clf_eval.py                        # Script to train and test models
 ├── data
@@ -26,33 +59,11 @@ Finally the best model is used to classify real samples of water.
 │   └── 4_🧪_Classify Water Quality.py
 ├── requirements.txt                   # Dependecies
 └── scaler.joblib                      # Preprocessing scaler file
+```
 
 ---
 
-# Online Version
-You can access the app using this [Streamlit link](aquanalysis.streamlit.app).
-
-# How to Run the Project Locally
-
-1. Clone Repo
-`
-git clone https://github.com/Josemtobon/Water-Quality-Analysis-and-Prediction.git
-cd Water-Quality-Analysis-and-Prediction
-`
-
-2. Install Dependecies
-`
-pip install -r requirements.txt
-`
-
-3. Run the Streamlit App
-`
-streamlit run Home.py
-`
-
----
-
-# Acknowledgements
+## Acknowledgements
 
 Dataset: [Aquaculture - Water Quality Dataset](https://data.mendeley.com/datasets/y78ty2g293/1)
 by Veeramsetty, Venkataramana; Arabelli, Rajeshwarrao; Bernatin, T. (2024).
